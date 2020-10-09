@@ -1,6 +1,7 @@
 package com.in20minutes.todo;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,7 +18,12 @@ public class ListTodoServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
-		request.setAttribute("todos", todoService.retrieveTodos());
+		try {
+			request.setAttribute("todos", todoService.retrieveTodos());
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		request.getRequestDispatcher("/WEB-INF/views/listTodos.jsp").forward(request, response);
 	}
 }

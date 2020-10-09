@@ -1,26 +1,31 @@
 package com.in20minutes.todo;
+import com.in20minutes.db.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TodoService {
 	private static List<Todo> todos = new ArrayList<Todo>();
-
+	static MySqlConnection connection;
 	static {
-		todos.add(new Todo("Learn Web Application","Study"));
-		todos.add(new Todo("Learn Spring","Study"));
-		todos.add(new Todo("Learn Spring MVC","Study"));
+		
+			connection = new MySqlConnection();
+		
 	}
 
-	public List<Todo> retrieveTodos() {
+	public List<Todo> retrieveTodos() throws ClassNotFoundException, SQLException {
+		
+		todos = connection.select("*", "", "todo");
 		return todos;
 	}
 
-	public void addTodo(String todo,String category) {
-		todos.add(new Todo(todo,category));
+	public void addTodo(String todo,String category) throws ClassNotFoundException, SQLException {
+		connection.insert(todo, category, "todo");
 	}
 
-	public void deleteTodo(String todo,String category) {
-		todos.remove(new Todo(todo,category));
+	public void deleteTodo(String todo,String category) throws SQLException, ClassNotFoundException {
+		connection.delete("todo", "name="+"'"+todo+"'");
+		
 	}
 }

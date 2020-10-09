@@ -1,6 +1,7 @@
 package com.in20minutes.todo;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,9 +27,19 @@ public class AddTodoServlet extends HttpServlet {
 		if ("".equals(todo)) {
 			request.setAttribute("errorMessage", "Enter a valid Todo");
 		} else {
-			todoService.addTodo(todo,category);
+			try {
+				todoService.addTodo(todo,category);
+			} catch (ClassNotFoundException | SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		request.setAttribute("todos", todoService.retrieveTodos());
+		try {
+			request.setAttribute("todos", todoService.retrieveTodos());
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		request.getRequestDispatcher("/WEB-INF/views/listTodos.jsp").forward(request, response);
 	}
 

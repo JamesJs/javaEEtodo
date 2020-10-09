@@ -1,6 +1,7 @@
 package com.in20minutes.todo;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,7 +18,15 @@ public class DeleteTodoServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
-		todoService.deleteTodo(request.getParameter("todo"),request.getParameter("category"));
+		try {
+			todoService.deleteTodo(request.getParameter("todo"),request.getParameter("category"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		response.sendRedirect("/listTodos.do");
 	}
 }
